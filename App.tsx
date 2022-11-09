@@ -18,6 +18,12 @@ export default function App() {
       setCurrentIndex((prevState) => prevState + 1);
     }
   };
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      handleRightClick();
+    }, 1500);
+  }, []);
   return (
     <div>
       <div className="carouselWrapper">
