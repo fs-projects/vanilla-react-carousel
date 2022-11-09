@@ -4,6 +4,9 @@ import './style.css';
 
 export default function App() {
   const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [autoPlay, setAutoPlay] = React.useState(true);
+  let timer = null;
+  console.log('currentIndex', currentIndex);
   const handleLeftClick = () => {
     if (currentIndex === 0) {
       setCurrentIndex(images.length - 1);
@@ -19,14 +22,31 @@ export default function App() {
     }
   };
 
+  const handleDotClick = (i) => {
+    setCurrentIndex(i);
+  };
+
   React.useEffect(() => {
-    setTimeout(() => {
-      handleRightClick();
-    }, 1500);
+    autoPlay &&
+      setTimeout(() => {
+        handleRightClick();
+      }, 1500);
   }, []);
+
+  const handleMouseEnter = () => {
+    setAutoPlay(false);
+    clearTimeout(timer);
+  };
+  const handleMouseLeave = () => {
+    setAutoPlay(true);
+  };
   return (
     <div>
-      <div className="carouselWrapper">
+      <div
+        className="carouselWrapper"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         {images &&
           images.map((el, i) => {
             return (
@@ -54,7 +74,9 @@ export default function App() {
           {images.map((_, i) => {
             return (
               <span
+                key={i}
                 className={`${i === currentIndex ? 'dot dotActive' : 'dot'}`}
+                onClick={() => handleDotClick(i)}
               ></span>
             );
           })}
